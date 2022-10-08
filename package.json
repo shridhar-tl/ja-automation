@@ -1,0 +1,26 @@
+{
+  "name": "ja-automation",
+  "version": "1.0.0",
+  "description": "Automation test suit for Jira Assistant extension",
+  "type": "module",
+  "scripts": {
+    "test_old": "mocha test/**/*.spec.js --debug-brk --no-timeouts --recursive --reporter mochawesome --require mochawesome/register --reporter-options reportDir=reports,reportFilename=test_results",
+    "test": "mocha --config .mocharc.json"
+  },
+  "keywords": [
+    "ja"
+  ],
+  "author": "Shridhar TL",
+  "dependencies": {
+    "@babel/core": "^7.19.3",
+    "@babel/preset-env": "^7.19.3",
+    "@babel/register": "^7.18.9",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "mochawesome": "^7.1.3",
+    "moment": "^2.29.4",
+    "nyc": "^15.1.0",
+    "regenerator-runtime": "^0.13.9",
+    "selenium-webdriver": "^4.5.0"
+  }
+}

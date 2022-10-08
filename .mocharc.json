@@ -1,0 +1,22 @@
+{
+    "node-option": [
+        "experimental-specifier-resolution=node"
+    ],
+    "package": "./package.json",
+    "files": [
+        "test/**/*.spec.js"
+    ],
+    "recursive": true,
+    "timeout": 30000,
+    "noTimeouts": true,
+    "debugBrk": true,
+    "require": [
+        "@babel/register",
+        "regenerator-runtime/runtime",
+        "mochawesome/register"
+    ],
+    "reporter": "mochawesome",
+    "reporterOptions": [
+        "reportDir=reports,reportFilename=test_results"
+    ]
+}
