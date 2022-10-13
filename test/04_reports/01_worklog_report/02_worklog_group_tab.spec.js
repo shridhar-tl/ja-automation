@@ -54,8 +54,9 @@ describe("worklog report - grouped tab tests", function () {
             yesterday = moment().add(-1, 'days').format('YYYYMMDD');
 
         await assertIssueHourLogOnDate(table, 'JAS-1', yesterday, '1h');
+        await assertIssueHourLogOnDate(table, 'JAS-1', 'total', '1h');
         await assertIssueHourLogOnDate(table, 'JAK-2', today, '1h');
-        await assertIssueHourLogOnDate(table, 'JAK-2', 'total', '2h');
+        await assertIssueHourLogOnDate(table, 'JAK-2', 'total', '1h');
     });
 });
 

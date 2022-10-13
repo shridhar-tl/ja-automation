@@ -16,5 +16,11 @@ describe("worklog calendar tests", function () {
         assert.isTrue(route.endsWith('/calendar'));
     });
 
+    it("verify if calendar loads worklog", async function () {
+        await navigateToMenu(driver, 'calendar');
+        await waitFor(1500);
 
+        const route = await getCurrentPath(driver);
+        assert.isTrue(route.endsWith('/calendar'));
+    });
 });

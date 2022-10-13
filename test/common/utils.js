@@ -1,3 +1,4 @@
+import { assert } from "chai";
 import { By } from "selenium-webdriver";
 import { getScope } from "./driver";
 
@@ -7,11 +8,45 @@ export async function waitFor(ms) {
     });
 }
 
-export function waitForPageLoad(driver) {
-    return driver.wait(async function () {
+export async function waitForPageLoad(driver, origin) {
+    let url, loadedOrigin;
+
+    await driver.wait(async function () {
         const readyState = await driver.executeScript('return document.readyState');
-        return readyState === 'complete';
+        const isReady = readyState === 'complete';
+        if (!origin || !isReady) {
+            return isReady;
+        }
+
+        const urlStr = await driver.getCurrentUrl();
+        url = new URL(urlStr);
+        const { protocol, host, origin: srcOrigin } = url;
+        loadedOrigin = srcOrigin && srcOrigin !== 'null' ? srcOrigin : (protocol + '//' + host);
+
+        return loadedOrigin === origin;
+    }, 30000);
+
+    if (origin) {
+        assert.equal(loadedOrigin, origin);
+    }
+
+    return url;
+}
+
+export async function waitForRouteToLoad(driver, path, exact) {
+    await driver.wait(async function () {
+        const route = await getCurrentPath(driver);
+        return exact ? route === path : route.includes(path);
     }, 5000);
+
+    const route = await getCurrentPath(driver);
+    if (exact) {
+        assert.equal(route, path);
+    } else {
+        assert.strictEqual(route.includes(path), true);
+    }
+
+    return route;
 }
 
 export async function getCurrentPath(driver) {

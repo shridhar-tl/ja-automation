@@ -24,6 +24,7 @@ export default function getScenario() {
     const useWeb = scenarioIdParts.includes("web");
 
     const scenario = {
+        scenarioId,
         useWeb,
         browserToTest: env.BROWSER_NAME,
         useExtn: scenarioIdParts.includes("extn"),
@@ -32,7 +33,8 @@ export default function getScenario() {
         authType: scenarioIdParts[0],
         jiraUrl: env.JIRA_URL,
         jiraUser: env.JIRA_USER,
-        jiraPwd: env.JIRA_PASSWORD
+        jiraPwd: env.JIRA_PASSWORD,
+        jiraSecret: env.JIRA_SECRET_KEY,
     };
 
     return scenario;
@@ -62,6 +64,7 @@ function getEnvConfig() {
         "EXTN_PATH": env("EXTN_PATH", defaultConfig.EXTN_PATH),
         "JIRA_URL": env("JIRA_URL", defaultConfig.JIRA_URL),
         "JIRA_USER": env("JIRA_USER", defaultConfig.JIRA_USER),
-        "JIRA_PASSWORD": env("JIRA_PASSWORD", defaultConfig.JIRA_PASSWORD)
+        "JIRA_PASSWORD": env("JIRA_PASSWORD", defaultConfig.JIRA_PASSWORD),
+        "JIRA_SECRET_KEY": env("JIRA_SECRET_KEY", defaultConfig.JIRA_SECRET_KEY)
     }
 }

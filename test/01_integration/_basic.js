@@ -2,7 +2,7 @@ import { By, until } from 'selenium-webdriver';
 import { it } from 'mocha';
 import { assert } from 'chai';
 import { getScope } from '../common/driver';
-import { forElToBeRemoved, forLoaderToEnd, getCurrentPath, waitFor, waitForPageLoad } from '../common/utils';
+import { forElToBeRemoved, forLoaderToEnd, getCurrentPath, waitFor, waitForPageLoad, waitForRouteToLoad } from '../common/utils';
 
 export default function () {
     const { driver, mapPath, scenario } = getScope();
@@ -48,7 +48,7 @@ export default function () {
         await loginIdTextField.sendKeys(scenario.jiraUser);
 
         const passwordTextField = await driver.findElement(By.css('input[placeholder="Password / Rest API Token"]'));
-        await passwordTextField.sendKeys(scenario.jiraPwd);
+        await passwordTextField.sendKeys(scenario.jiraSecret);
 
         // Wait for the toast to be hiddin in case of any error
         await forElToBeRemoved(driver, By.css('.p-toast-message-content'));
@@ -74,9 +74,6 @@ export default function () {
         }
 
         await waitForPageLoad(driver);
-        await waitFor(2000);
-
-        const route = await getCurrentPath(driver);
-        assert.equal(route, '/2/dashboard/0');
+        await waitForRouteToLoad(driver, '/2/dashboard/0', true);
     });
 };

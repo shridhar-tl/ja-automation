@@ -1,4 +1,7 @@
-{
+const { SCENARIO_ID } = require('./env.json');
+const scenarioId = process.env.SCENARIO_ID || SCENARIO_ID;
+
+module.exports = {
     "node-option": [
         "experimental-specifier-resolution=node"
     ],
@@ -17,6 +20,6 @@
     ],
     "reporter": "mochawesome",
     "reporterOptions": [
-        "reportDir=reports,reportFilename=test_results"
+        "reportDir=test_results,reportFilename=report_[datetime]_[status]_" + scenarioId + ",timestamp=yyyymmdd"
     ]
-}
+};
