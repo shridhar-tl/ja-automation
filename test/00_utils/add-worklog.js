@@ -17,8 +17,14 @@ export default async function addWorklog(driver, { ticketNo, date, days, descrip
         date = today10AM.add(days, "days");
     } else if (date) {
         date = moment(date);
-    } else {
+    } else if (date !== false) {
         date = today10AM
+    }
+
+    if (date) {
+        const logTime = await ctls[0].findElement(By.css('input'));
+        await logTime.clear();
+        await logTime.sendKeys(date.format('DD-MMM-YYYY HH:mm A'));
     }
 
     if (ticketNo) {
@@ -26,10 +32,6 @@ export default async function addWorklog(driver, { ticketNo, date, days, descrip
         await issueKeyCtl.clear();
         await issueKeyCtl.sendKeys(ticketNo);
     }
-
-    const logTime = await ctls[0].findElement(By.css('input'));
-    await logTime.clear();
-    await logTime.sendKeys(date.format('DD-MMM-YYYY HH:mm A'));
 
     if (spent) {
         spent = convertHourToString(spent);

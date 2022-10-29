@@ -21,10 +21,10 @@ describe("worklog report tests", function () {
         assert.equal(gadgetHeader, 'Worklog Report');
     });
 
-    it("choose to load last 1 week report", async function () {
+    it("choose to load this week report", async function () {
         const dateControl = await getElFromHeader(driver, '', 'input');
         await dateControl.click();
-        await chooseDateRange(driver, 'Last one week');
+        await chooseDateRange(driver, 'This week');
         await untilGadgetLoads(driver);
     });
 });

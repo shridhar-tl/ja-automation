@@ -61,17 +61,18 @@ export async function getCurrentPath(driver) {
 }
 
 export async function forLoaderToEnd(driver, button) {
+    await waitFor(2000);
     return true;
 }
 
-export async function forElToBeRemoved(driver, selector, root = driver) {
+export async function forElToBeRemoved(driver, selector, root = driver, waitFor = 6000) {
     if (typeof selector === 'string') {
         selector = By.css(selector);
     }
 
     await driver.wait(async function () {
         return (await (root.findElements(selector))).length === 0;
-    }, 6000);
+    }, waitFor);
 }
 
 export function confirmDelete(driver) {
