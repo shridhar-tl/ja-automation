@@ -1,5 +1,6 @@
 import { extnRootUrl, webRootUrl } from '../constants/urls';
 import jsonConfig from '../../env.json' assert { type: "json" };
+import path from 'path';
 
 const scenarios = [
     // Only with extension
@@ -28,7 +29,7 @@ export default function getScenario() {
         useWeb,
         browserToTest: env.BROWSER_NAME,
         useExtn: scenarioIdParts.includes("extn"),
-        extensionPath: env.EXTN_PATH,
+        extensionPath: path.join(env.EXTN_PATH, env.BROWSER_NAME),
         rootUrl: useWeb ? env.WEB_ROOT_URL : env.EXTN_ROOT_URL,
         authType: scenarioIdParts[0],
         jiraUrl: env.JIRA_URL,

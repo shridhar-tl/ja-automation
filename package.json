@@ -4,24 +4,35 @@
   "description": "Automation test suit for Jira Assistant extension",
   "type": "module",
   "scripts": {
-    "test": "mocha --config .mocharc.cjs"
+    "test": "mocha --config .mocharc.cjs",
+    "test-all": "concurrently -m 1 -k npm:test:*",
+    "test:session_extn": "cross-env SCENARIO_ID=session_extn mocha --config .mocharc.cjs",
+    "test:basic_extn": "cross-env SCENARIO_ID=basic_extn mocha --config .mocharc.cjs",
+    "test:oauth_extn": "cross-env SCENARIO_ID=oauth_extn mocha --config .mocharc.cjs",
+    "test:session_extn_web": "cross-env SCENARIO_ID=session_extn_web mocha --config .mocharc.cjs",
+    "test:basic_extn_web": "cross-env SCENARIO_ID=basic_extn_web mocha --config .mocharc.cjs",
+    "test:oauth_extn_web": "cross-env SCENARIO_ID=oauth_extn_web mocha --config .mocharc.cjs",
+    "test:basic_web": "cross-env SCENARIO_ID=basic_web mocha --config .mocharc.cjs",
+    "test:oauth_web": "cross-env SCENARIO_ID=oauth_web mocha --config .mocharc.cjs"
   },
   "keywords": [
     "ja"
   ],
   "author": "Shridhar TL",
   "dependencies": {
-    "@babel/core": "^7.19.3",
-    "@babel/preset-env": "^7.19.3",
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
     "@babel/register": "^7.18.9",
     "chai": "^4.3.6",
-    "eslint": "^8.25.0",
+    "concurrently": "^7.5.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.26.0",
     "fs-extra": "^10.1.0",
-    "mocha": "^10.0.0",
+    "mocha": "^10.1.0",
     "mochawesome": "^7.1.3",
     "moment": "^2.29.4",
     "nyc": "^15.1.0",
-    "regenerator-runtime": "^0.13.9",
+    "regenerator-runtime": "^0.13.10",
     "selenium-webdriver": "^4.5.0"
   },
   "eslintConfig": {

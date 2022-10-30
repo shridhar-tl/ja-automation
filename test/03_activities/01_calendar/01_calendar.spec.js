@@ -4,7 +4,7 @@ import { assert } from 'chai';
 import moment from 'moment';
 import { getScope } from '../../common/driver';
 import { getCurrentPath, waitFor, navigateToMenu } from '../../common/utils';
-import { getGadgetHeader } from '../../00_utils/_gadget';
+import { getGadgetHeader, untilGadgetLoads } from '../../00_utils/_gadget';
 import { executeEventOption, validateEventOnADay } from './00_utils';
 
 describe("worklog calendar tests", function () {
@@ -28,7 +28,8 @@ describe("worklog calendar tests", function () {
 
         const calendar = await driver.findElement(By.css('.fc-timegrid.fc-timeGridWeek-view'));
 
-        const header = await calendar.findElements(By.css('table.fc-col-header thead tr th.fc-col-header-cell.fc-day[data-date]'));
+        const headerSelector = By.css('table.fc-col-header thead tr th.fc-col-header-cell.fc-day[data-date]');
+        let header = await calendar.findElements(headerSelector);
         assert.equal(header.length, 7);
 
         assert.equal(await header[dayOfWeek_today].getAttribute('data-date'), today.format('YYYY-MM-DD'));
@@ -45,6 +46,7 @@ describe("worklog calendar tests", function () {
             navigated = true;
 
             await untilGadgetLoads(driver);
+            header = await calendar.findElements(headerSelector);
         }
 
         assert.equal(await header[dayOfWeek_yesterday].getAttribute('data-date'), yesterday.format('YYYY-MM-DD'));
