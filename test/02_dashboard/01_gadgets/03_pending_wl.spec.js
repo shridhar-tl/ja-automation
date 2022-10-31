@@ -1,8 +1,8 @@
-import { By, until } from 'selenium-webdriver';
+import { By } from 'selenium-webdriver';
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { getScope } from '../../common/driver';
-import { getCurrentPath, waitFor, confirmDelete } from '../../common/utils';
+import { getCurrentPath, confirmDelete } from '../../common/utils';
 import addWorklog from '../../00_utils/add-worklog';
 import { getGadgetHeaderText, getTableFromGadget, triggerMenuClick, getElFromHeader, untilGadgetLoads } from '../../00_utils/_gadget';
 

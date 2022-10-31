@@ -1,5 +1,5 @@
+import { By, until } from "selenium-webdriver";
 import { assert } from "chai";
-import { By } from "selenium-webdriver";
 import { getScope } from "./driver";
 
 export async function waitFor(ms) {
@@ -8,7 +8,7 @@ export async function waitFor(ms) {
     });
 }
 
-export async function waitForPageLoad(driver, origin) {
+export async function waitForPageLoad(driver, origin, timeout = 30000) {
     let url, loadedOrigin;
 
     await driver.wait(async function () {
@@ -24,7 +24,7 @@ export async function waitForPageLoad(driver, origin) {
         loadedOrigin = srcOrigin && srcOrigin !== 'null' ? srcOrigin : (protocol + '//' + host);
 
         return loadedOrigin === origin;
-    }, 30000);
+    }, timeout);
 
     if (origin) {
         assert.equal(loadedOrigin, origin);
@@ -46,6 +46,8 @@ export async function waitForRouteToLoad(driver, path, exact) {
         assert.strictEqual(route.includes(path), true);
     }
 
+    await waitFor(1000);
+
     return route;
 }
 
@@ -55,9 +57,7 @@ export async function getCurrentPath(driver) {
     const url = new URL(urlStr);
     const useHash = !useWeb || url.hash?.length > 1;
 
-    let path = useHash ? url.hash.substring('1') : url.pathname;
-
-    return path;
+    return useHash ? url.hash.substring('1') : url.pathname;
 }
 
 export async function forLoaderToEnd(driver, button) {
@@ -73,6 +73,23 @@ export async function forElToBeRemoved(driver, selector, root = driver, waitFor 
     await driver.wait(async function () {
         return (await (root.findElements(selector))).length === 0;
     }, waitFor);
+}
+
+export async function forElToBeVisible(driver, selector, root = driver, waitFor = 6000) {
+    if (typeof selector === 'string') {
+        selector = By.css(selector);
+    }
+
+    let el;
+    await driver.wait(async function () {
+        const elements = await root.findElements(selector);
+        if (elements.length > 0) {
+            el = elements[0];
+            await driver.wait(until.elementIsVisible(el), 1000);
+        }
+    }, waitFor);
+
+    return el;
 }
 
 export function confirmDelete(driver) {

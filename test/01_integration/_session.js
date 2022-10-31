@@ -1,8 +1,8 @@
-import { By, Key, until } from 'selenium-webdriver';
+import { By, until } from 'selenium-webdriver';
 import { it } from 'mocha';
 import { assert } from 'chai';
 import { getScope } from '../common/driver';
-import { forLoaderToEnd, waitFor, waitForPageLoad, waitForRouteToLoad } from '../common/utils';
+import { waitFor, waitForPageLoad, waitForRouteToLoad } from '../common/utils';
 
 export default function () {
     const { driver, mapPath, scenario } = getScope();
@@ -30,7 +30,7 @@ export default function () {
         const btnLogin = await driver.findElement(By.id('login-submit'));
         await btnLogin.click();
 
-        const url = await waitForPageLoad(driver, scenario.jiraUrl);
+        await waitForPageLoad(driver, scenario.jiraUrl);
     });
 
     it("launches extension integrate page", async function () {
@@ -39,6 +39,14 @@ export default function () {
         await waitForPageLoad(driver);
         await waitForRouteToLoad(driver, '/integrate', true);
     });
+
+    if (scenario.useWeb) {
+        it("verify navigate to extn integrate page", async function () {
+            const extnAuth = await driver.findElement(By.css('div.auth-type[data-test-id="extn-auth"]'));
+            await extnAuth.click();
+            await waitForRouteToLoad(driver, '/integrate/extn', true);
+        });
+    }
 
     it("integrate using browser session", async function () {
         const inputText = await driver.findElement(By.css('input.p-inputtext'));
@@ -50,17 +58,19 @@ export default function () {
         await btnIntegrate.click();
         await waitFor(1000);
 
-        await driver.wait(async function () {
-            const allWindows = await driver.getAllWindowHandles();
-            const newWinHandle = allWindows[0];
+        if (!scenario.useWeb) {
+            await driver.wait(async function () {
+                const allWindows = await driver.getAllWindowHandles();
+                const newWinHandle = allWindows[0];
 
-            if (newWinHandle !== currentWinHandle) {
-                await driver.switchTo().window(newWinHandle);
-                return true;
-            } else {
-                return false;
-            }
-        }, 20000);
+                if (newWinHandle !== currentWinHandle) {
+                    await driver.switchTo().window(newWinHandle);
+                    return true;
+                } else {
+                    return false;
+                }
+            }, 20000);
+        }
 
         await waitForPageLoad(driver, scenario.rootUrl);
         await waitForRouteToLoad(driver, '/2/dashboard/0', true);

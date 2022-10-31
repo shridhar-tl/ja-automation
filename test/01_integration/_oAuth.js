@@ -2,7 +2,6 @@ import { By, until } from 'selenium-webdriver';
 import { it } from 'mocha';
 import { assert } from 'chai';
 import { getScope } from '../common/driver';
-import { webRootUrl } from '../constants/urls';
 import { getCurrentPath, waitFor, waitForPageLoad, waitForRouteToLoad } from '../common/utils';
 
 export default function () {
@@ -46,10 +45,10 @@ export default function () {
             const extnAuth = await driver.findElement(By.css('div.card > .card-body > div.auth-type[data-test-id="o-auth"]'));
             await extnAuth.click();
 
-            const dialogSelector = By.css('.p-dialog.dlg-yesNo');
-            await driver.wait(until.elementIsVisible(dialogSelector), 1500);
+            await waitFor(1000);
 
-            const dialog = await driver.findElement(dialogSelector);
+            const dialog = await driver.findElement(By.css('.p-dialog.dlg-yesNo'));// await forElToBeVisible(driver, '.p-dialog.dlg-yesNo');
+
             const header = await dialog.findElement(By.css('.p-dialog-header .p-dialog-title'));
             const headerText = await header.getText();
 
@@ -84,14 +83,17 @@ export default function () {
     });
 
     it("accept consent and integrate with Jira", async function () {
+        await waitFor(2000);
         const btnSubmit = await driver.findElement(By.css('button[type="submit"]'));
         await btnSubmit.click();
         await waitFor(1000);
 
-        await waitForPageLoad(driver, scenario.rootUrl);
+        await waitForPageLoad(driver, scenario.rootUrl, 40000);
         await waitForRouteToLoad(driver, 'dashboard');
 
-        const authType = await driver.executeScript('return localStorage.getItem("authType")');
-        assert.equal(authType, scenario.useExtn ? '1' : '2');
+        if (scenario.useWeb) {
+            const authType = await driver.executeScript('return localStorage.getItem("authType")');
+            assert.equal(authType, scenario.useExtn ? '1' : '2');
+        }
     });
 };

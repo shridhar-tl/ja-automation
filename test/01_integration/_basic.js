@@ -1,4 +1,4 @@
-import { By, until } from 'selenium-webdriver';
+import { By } from 'selenium-webdriver';
 import { it } from 'mocha';
 import { assert } from 'chai';
 import { getScope } from '../common/driver';
@@ -18,27 +18,40 @@ export default function () {
     });
 
     if (scenario.useWeb) {
-        it("launches extension integrate screen", async function () {
-            const extnAuth = await driver.findElement(By.css('div.card > .card-body > div.auth-type[data-test-id="extn-auth"]'));
-            await extnAuth.click();
+        if (scenario.useExtn) {
+            it("launches extension integrate screen", async function () {
+                const extnAuth = await driver.findElement(By.css('div.card > .card-body > div.auth-type[data-test-id="extn-auth"]'));
+                await extnAuth.click();
 
-            await waitFor(1000);
+                await waitFor(1000);
 
-            const route = await getCurrentPath(driver);
-            assert.equal(route, '/integrate/extn');
-        });
+                const route = await getCurrentPath(driver);
+                assert.equal(route, '/integrate/extn');
+            });
+        } else {
+            it("launches web basic auth screen", async function () {
+                const extnAuth = await driver.findElement(By.css('div.card > .card-body > div.auth-type[data-test-id="basic-auth"]'));
+                await extnAuth.click();
+
+                await waitFor(1000);
+
+                const route = await getCurrentPath(driver);
+                assert.equal(route, '/integrate/basic');
+            });
+        }
     }
 
-    it("launches basic auth screen", async function () {
-        const configIcon = await driver.findElement(By.css('.fa.fa-cogs'));
-        await configIcon.click();
+    if (scenario.useExtn) {
+        it("launches extension basic auth screen", async function () {
+            const configIcon = await driver.findElement(By.css('.fa.fa-cogs'));
+            await configIcon.click();
 
-        const basicAuthMenu = await driver.findElement(By.css('div.p-menu ul li:last-child a'));
-        await basicAuthMenu.click();
+            const basicAuthMenu = await driver.findElement(By.css('div.p-menu ul li:last-child a'));
+            await basicAuthMenu.click();
 
-        const route = await getCurrentPath(driver);
-        assert.equal(route, '/integrate/basic/1');
-    });
+            await waitForRouteToLoad(driver, '/integrate/basic/1', true);
+        });
+    }
 
     it("integrate using credentials", async function () {
         const jiraUrlTextField = await driver.findElement(By.css('input[placeholder="Jira root url (eg: https://jira.example.com)"]'));

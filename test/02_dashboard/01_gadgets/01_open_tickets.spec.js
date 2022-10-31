@@ -1,4 +1,4 @@
-import { By, until } from 'selenium-webdriver';
+import { By } from 'selenium-webdriver';
 import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import { getScope } from '../../common/driver';
