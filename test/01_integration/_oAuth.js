@@ -86,9 +86,9 @@ export default function () {
         await waitFor(2000);
         const btnSubmit = await driver.findElement(By.css('button[type="submit"]'));
         await btnSubmit.click();
-        await waitFor(1000);
+        await waitFor(4000);
 
-        await waitForPageLoad(driver, scenario.rootUrl, 40000);
+        await waitForPageLoad(driver, scenario.rootUrl, 40000, scenario.webRootUrl);
         await waitForRouteToLoad(driver, 'dashboard');
 
         if (scenario.useWeb) {

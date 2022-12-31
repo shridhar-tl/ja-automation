@@ -9,7 +9,7 @@ import { getGadgetHeaderText, getTableFromGadget, triggerMenuClick, getElFromHea
 const gadgetName = 'myBookmarks';
 
 describe("my bookmarks gadget test", function () {
-    const { driver } = getScope();
+    const { driver, scenario } = getScope();
 
     it("verify if default dashboard is loaded", async function () {
         const route = await getCurrentPath(driver);

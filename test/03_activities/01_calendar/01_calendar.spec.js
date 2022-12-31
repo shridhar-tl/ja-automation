@@ -3,20 +3,23 @@ import { describe, it } from 'mocha';
 import { assert } from 'chai';
 import moment from 'moment';
 import { getScope } from '../../common/driver';
-import { getCurrentPath, waitFor, navigateToMenu } from '../../common/utils';
+import { getCurrentPath, navigateToMenu } from '../../common/utils';
 import { getGadgetHeader, untilGadgetLoads } from '../../00_utils/_gadget';
 import { executeEventOption, validateEventOnADay } from './00_utils';
 
 describe("worklog calendar tests", function () {
-    const { driver } = getScope();
-
+    const { driver, scenario } = getScope();
 
     it("verify if calendar loads", async function () {
-        await navigateToMenu(driver, 'calendar');
-        await waitFor(1500);
+        await navigateToMenu(driver, 'CAL', 'Worklog Calendar');
+        await driver.sleep(1500);
 
         const route = await getCurrentPath(driver);
         assert.isTrue(route.endsWith('/calendar'));
+
+        if (scenario.useCloud) {
+            await driver.sleep(4000); // This is to wait for dashboard route to be loaded
+        }
     });
 
     it("verify if calendar loads worklog", async function () {

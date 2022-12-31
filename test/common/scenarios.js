@@ -10,7 +10,10 @@ const scenarios = [
     'session_extn_web', 'basic_extn_web', 'oauth_extn_web',
 
     // Web only without extension
-    'basic_web', 'oauth_web'
+    'basic_web', 'oauth_web',
+
+    // Jira cloud plugin
+    'cloud_app'
 ];
 
 export default function getScenario() {
@@ -29,13 +32,16 @@ export default function getScenario() {
         useWeb,
         browserToTest: env.BROWSER_NAME,
         useExtn: scenarioIdParts.includes("extn"),
+        useCloud: scenarioIdParts.includes("cloud"),
         extensionPath: path.join(env.EXTN_PATH, env.BROWSER_NAME),
         rootUrl: useWeb ? env.WEB_ROOT_URL : env.EXTN_ROOT_URL,
+        webRootUrl: env.WEB_ROOT_URL,
         authType: scenarioIdParts[0],
         jiraUrl: env.JIRA_URL,
         jiraUser: env.JIRA_USER,
         jiraPwd: env.JIRA_PASSWORD,
         jiraSecret: env.JIRA_SECRET_KEY,
+        jiraCloudAppId: env.JIRA_CLOUD_APP_ID
     };
 
     return scenario;
@@ -51,6 +57,7 @@ function getEnvConfig() {
         "EXTN_ROOT_URL": extnRootUrl["chrome"],
         "EXTN_PATH": "./extension",
         "JIRA_URL": "https://jira-ja.atlassian.net",
+        "JIRA_CLOUD_APP_ID": "3864d3bc-aad3-4650-ac35-e15af61fd92d",
         ...jsonConfig
     };
 
@@ -61,6 +68,7 @@ function getEnvConfig() {
         "SCENARIO_ID": env("SCENARIO_ID", defaultConfig.SCENARIO_ID),
         "BROWSER_NAME": browser,
         "WEB_ROOT_URL": env("WEB_ROOT_URL", defaultConfig.WEB_ROOT_URL),
+        "JIRA_CLOUD_APP_ID": env("JIRA_CLOUD_APP_ID", defaultConfig.JIRA_CLOUD_APP_ID),
         "EXTN_ROOT_URL": env("EXTN_ROOT_URL", extnRootUrl[browser]),
         "EXTN_PATH": env("EXTN_PATH", defaultConfig.EXTN_PATH),
         "JIRA_URL": env("JIRA_URL", defaultConfig.JIRA_URL),

@@ -8,11 +8,11 @@ import { getElFromHeader, untilGadgetLoads } from '../../00_utils/_gadget';
 import addWorklog from '../../00_utils/add-worklog';
 
 describe("worklog calendar tests", function () {
-    const { driver } = getScope();
+    const { driver, scenario } = getScope();
 
     it("verify if calendar loads", async function () {
         await waitFor(2000);
-        await navigateToMenu(driver, 'calendar');
+        await navigateToMenu(driver, 'CAL', 'Worklog Calendar');
         await waitFor(1500);
 
         const route = await getCurrentPath(driver);
@@ -23,7 +23,7 @@ describe("worklog calendar tests", function () {
         const calendar = await driver.findElement(By.css('.fc-timegrid.fc-timeGridWeek-view'));
 
         for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
-            await createEvent(driver, calendar, dayOfWeek + 2, moment().startOf('week').add(dayOfWeek, 'days'), 4 + dayOfWeek);
+            await createEvent(driver, scenario, calendar, dayOfWeek + 2, moment().startOf('week').add(dayOfWeek, 'days'), 4 + dayOfWeek);
             const ticketNo = 'JAS-' + (dayOfWeek + 5);
             await addWorklog(driver, { date: false, ticketNo, description: 'Sample Automation - Calendar Worklog - ' + ticketNo });
         }
@@ -50,13 +50,15 @@ describe("worklog calendar tests", function () {
     });
 });
 
-async function createEvent(driver, calendar, dayIndex, dateObj, slots = 4) {
+async function createEvent(driver, scenario, calendar, dayIndex, dateObj, slots = 4) {
     const dayCol = await calendar.findElement(By.css(`div.fc-timegrid-body > .fc-timegrid-cols > table > tbody > tr:first-child td.fc-timegrid-col:nth-child(${dayIndex})`));
 
     const dateStr = await dayCol.getAttribute('data-date');
     assert.equal(dateStr, dateObj.format('YYYY-MM-DD'));
 
     const actions = driver.actions({ async: true });
-    await actions.move({ origin: dayCol, x: 30, y: -300 }).press().perform();
-    await actions.move({ y: slots * 25, origin: Origin.POINTER }).release().perform();
+    const startTop = scenario.useCloud ? -285 : -300;
+    const slotSize = scenario.useCloud ? 26 : 25;
+    await actions.move({ origin: dayCol, x: 30, y: startTop }).press().perform();
+    await actions.move({ y: slots * slotSize, origin: Origin.POINTER }).release().perform();
 }

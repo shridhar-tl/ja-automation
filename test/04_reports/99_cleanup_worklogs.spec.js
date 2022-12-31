@@ -10,7 +10,7 @@ describe("worklog calendar tests", function () {
     const { driver } = getScope();
 
     it("verify if calendar loads", async function () {
-        await navigateToMenu(driver, 'calendar');
+        await navigateToMenu(driver, 'CAL', 'Worklog Calendar');
         await waitFor(1500);
 
         const route = await getCurrentPath(driver);

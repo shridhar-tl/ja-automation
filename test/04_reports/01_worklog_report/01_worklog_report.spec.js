@@ -9,7 +9,7 @@ describe("worklog report tests", function () {
 
     it("verify if worklog report loads", async function () {
         await waitFor(2000);
-        await navigateToMenu(driver, 'userdaywise');
+        await navigateToMenu(driver, 'R-UD', 'Worklog Report');
         await waitFor(1500);
 
         const route = await getCurrentPath(driver);
