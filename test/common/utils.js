@@ -84,9 +84,15 @@ export async function forElToBeRemoved(driver, selector, root = driver, waitFor 
         selector = By.css(selector);
     }
 
-    await driver.wait(async function () {
-        return (await (root.findElements(selector))).length === 0;
-    }, waitFor);
+    let el;
+    do {
+        waitFor -= 1000;
+        await driver.sleep(1000);
+        [el] = await root.findElements(selector);
+        if (!el) { return true; }
+    } while (waitFor > 0);
+
+    assert.equal(el, undefined, 'Element should not be available in dom');
 }
 
 export async function forElToBeVisible(driver, selector, root = driver, waitFor = 6000) {
@@ -95,13 +101,18 @@ export async function forElToBeVisible(driver, selector, root = driver, waitFor 
     }
 
     let el;
-    await driver.wait(async function () {
-        const elements = await root.findElements(selector);
-        if (elements.length > 0) {
-            el = elements[0];
-            await driver.wait(until.elementIsVisible(el), 1000);
+    do {
+        waitFor -= 1000;
+        await driver.sleep(1000);
+
+        [el] = await root.findElements(selector);
+        if (el) {
+            await driver.wait(until.elementIsVisible(el), waitFor > 0 ? waitFor : 1000);
+            waitFor = 0;
         }
-    }, waitFor);
+    } while (waitFor > 0);
+
+    assert.exists(el, 'Element should be visible');
 
     return el;
 }
@@ -112,14 +123,15 @@ export async function forElToBeAvailable(driver, selector, root = driver, waitFo
     }
 
     let el;
-    await driver.wait(async function () {
-        const elements = await root.findElements(selector);
-        if (elements.length > 0) {
-            el = elements[0];
-            return true;
+    do {
+        waitFor -= 1000;
+        await driver.sleep(1000);
+
+        [el] = await root.findElements(selector);
+        if (el) {
+            return el;
         }
-        return false;
-    }, waitFor);
+    } while (waitFor > 0);
 
     return el;
 }

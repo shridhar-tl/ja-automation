@@ -1,12 +1,14 @@
+import { assert } from "chai";
 import { By } from "selenium-webdriver";
-import { waitFor } from "../common/utils";
+import { forElToBeAvailable } from "../common/utils";
 
 export async function getGadget(driver, id) {
-    return driver.findElement(By.css(id ? `div.gadget[data-test-id="${id}"]` : 'div.gadget'));
+    return forElToBeAvailable(driver, id ? `div.gadget[data-test-id="${id}"]` : 'div.gadget', driver, 5000);
 }
 
 export async function untilGadgetLoads(driver, id) {
-    return waitFor(2000);
+    const el = await getGadget(driver, id);
+    assert.exists(el, 'Gadget should have been loaded');
 }
 
 export async function getGadgetHeader(driver, id) {

@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import moment from "moment/moment";
 import { By, Key } from "selenium-webdriver";
-import { forElToBeRemoved, waitFor } from "../common/utils";
+import { forElToBeAvailable, forElToBeRemoved, forElToBeVisible, waitFor } from "../common/utils";
 
 const today10AM = moment().startOf("day").add(10, 'hour');
 
@@ -31,6 +31,9 @@ export default async function addWorklog(driver, { ticketNo, date, days, descrip
         const issueKeyCtl = await ctls[1].findElement(By.css('input'));
         await issueKeyCtl.clear();
         await issueKeyCtl.sendKeys(ticketNo);
+        await issueKeyCtl.sendKeys(Key.TAB);
+        // Wait for the ticket details to be pulled from Jira
+        await forElToBeAvailable(driver, `div.sel-issue .edit-key.fa-pencil`, worklogDialog);
     }
 
     if (spent) {

@@ -58,7 +58,7 @@ async function createEvent(driver, scenario, calendar, dayIndex, dateObj, slots 
 
     const actions = driver.actions({ async: true });
     const startTop = scenario.useCloud ? -285 : -300;
-    const slotSize = scenario.useCloud ? 26 : 25;
+    const slotSize = 25;
     await actions.move({ origin: dayCol, x: 30, y: startTop }).press().perform();
     await actions.move({ y: slots * slotSize, origin: Origin.POINTER }).release().perform();
 }
