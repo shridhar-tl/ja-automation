@@ -51,7 +51,7 @@ function setEdgeOptions(driver, { useExtn, extensionPath }) {
 function setFirefoxOptions(driver, { browserToTest: browser, useExtn, extensionPath }) {
     const options = new FirefoxOptions();
     if (useExtn) {
-        options.addExtensions(extensionPath);
+        options.addExtensions(path.join(extensionPath, 'firefox.zip'));
     }
 
     return driver.setFirefoxOptions(options);
