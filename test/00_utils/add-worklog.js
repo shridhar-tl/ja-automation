@@ -22,7 +22,7 @@ export default async function addWorklog(driver, { ticketNo, date, days, descrip
     }
 
     if (date) {
-        const logTime = await ctls[0].findElement(By.css('input'));
+        const logTime = await ctls[0].findElement(By.css('input.date-range-ctl'));
         await logTime.clear();
         await logTime.sendKeys(date.format('DD-MMM-YYYY HH:mm A'));
     }
@@ -40,12 +40,12 @@ export default async function addWorklog(driver, { ticketNo, date, days, descrip
         spent = convertHourToString(spent);
         console.log('About to log ', spent, ' for ', description);
 
-        const timeSpent = await ctls[2].findElement(By.css('input'));
+        const timeSpent = await ctls[0].findElement(By.css('input.p-inputmask'));
         await timeSpent.sendKeys(Key.BACK_SPACE, spent);
     }
 
     if (description) {
-        const descCtl = await ctls[3].findElement(By.css('textarea'));
+        const descCtl = await ctls[2].findElement(By.css('textarea'));
         await descCtl.clear();
         await descCtl.sendKeys(description);
     }

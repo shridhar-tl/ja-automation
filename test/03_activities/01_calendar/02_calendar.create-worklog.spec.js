@@ -22,6 +22,7 @@ describe("worklog calendar tests", function () {
     it("verify if able to create worklog", async function () {
         const calendar = await driver.findElement(By.css('.fc-timegrid.fc-timeGridWeek-view'));
 
+        // This would start logging work starting on sunday 1h 30m
         for (let dayOfWeek = 0; dayOfWeek < 5; dayOfWeek++) {
             await createEvent(driver, scenario, calendar, dayOfWeek + 2, moment().startOf('week').add(dayOfWeek, 'days'), 4 + dayOfWeek);
             const ticketNo = 'JAS-' + (dayOfWeek + 5);
@@ -38,7 +39,7 @@ describe("worklog calendar tests", function () {
         await button.click();
 
         const actions = driver.actions({ async: true });
-        await actions.move({ origin: Origin.POINTER, y: 300 }).perform();
+        await actions.move({ origin: Origin.POINTER, x: -400 }).perform();
 
         await forLoaderToEnd(driver, button);
         await untilGadgetLoads(driver);
@@ -57,8 +58,8 @@ async function createEvent(driver, scenario, calendar, dayIndex, dateObj, slots 
     assert.equal(dateStr, dateObj.format('YYYY-MM-DD'));
 
     const actions = driver.actions({ async: true });
-    const startTop = scenario.useCloud ? -285 : -300;
-    const slotSize = 25;
+    const startTop = scenario.useCloud ? -200 : -200;
+    const slotSize = 26;
     await actions.move({ origin: dayCol, x: 30, y: startTop }).press().perform();
     await actions.move({ y: slots * slotSize, origin: Origin.POINTER }).release().perform();
 }

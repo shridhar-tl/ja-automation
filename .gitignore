@@ -43,3 +43,5 @@ reports
 package-lock.json
 yarn.lock
 test_results/
+
+.vscode

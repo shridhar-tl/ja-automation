@@ -30,7 +30,7 @@ describe("my open tickets gadget test", function () {
 
         const rows = await table.findElements(By.css('tbody > tr'));
 
-        assert.equal(rows.length, 4);
+        assert.equal(rows.length, 5);
     });
 
     it("bookmark tickets from loaded list", async function () {

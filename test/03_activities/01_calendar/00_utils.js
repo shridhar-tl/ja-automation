@@ -20,8 +20,12 @@ export async function validateEventOnADay(calendar, dayIndex, dateObj, issueKey,
     return event;
 }
 
-export async function executeEventOption(driver, event, className) {
-    await driver.actions({ bridge: true }).contextClick(event).perform();
-    const icon = await driver.findElement(By.css('.p-contextmenu > ul > li.p-menuitem > a > .' + className));
+export async function executeEventOption(driver, event, className, useIcon) {
+    if (useIcon) {
+        await event.findElement(By.css(`.fa.fa-ellipsis-v.pull-left`)).click();
+    } else {
+        await driver.actions({ bridge: true }).contextClick(event).perform();
+    }
+    const icon = await driver.findElement(By.css(`.${useIcon ? 'p-menu' : 'p-contextmenu'} > ul > li.p-menuitem > a > .${className}`));
     await icon.click();
 }

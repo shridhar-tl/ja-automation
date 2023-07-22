@@ -29,7 +29,10 @@ describe("worklog calendar tests", function () {
             const ticketNo = 'JAS-' + (dayOfWeek + 5);
             assert.equal(await header[dayOfWeek].getAttribute('data-date'), curDay.format('YYYY-MM-DD'));
             const event = await validateEventOnADay(calendar, dayOfWeek + 2, curDay, ticketNo, 'Sample Automation - Calendar Worklog - ' + ticketNo, '9:45am - ');
-            await executeEventOption(driver, event, 'fa-times');
+
+            // "dayOfWeek > 1" is used as last parameter in below code to use menu icon instead of right click in event
+            // This is primarily done as a workaround, as right click on event for more than 2 times does not work
+            await executeEventOption(driver, event, 'fa-times', dayOfWeek > 1);
         }
 
         await waitFor(2000);
