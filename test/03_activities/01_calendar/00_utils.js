@@ -22,7 +22,7 @@ export async function validateEventOnADay(calendar, dayIndex, dateObj, issueKey,
 
 export async function executeEventOption(driver, event, className, useIcon) {
     if (useIcon) {
-        await event.findElement(By.css(`.fa.fa-ellipsis-v.pull-left`)).click();
+        await event.findElement(By.css(`.fa.fa-ellipsis-v.float-start`)).click();
     } else {
         await driver.actions({ bridge: true }).contextClick(event).perform();
     }

@@ -42,9 +42,9 @@ describe("my open tickets gadget test", function () {
 
     it("add worklog for tickets from loaded list", async function () {
         const table = await getTableFromGadget(driver, gadgetName);
-        await triggerMenuClick(driver, table, 'JAK-2', 'clock-o');
+        await triggerMenuClick(driver, table, 'JAK-2', 'clock');
         await addWorklog(driver, { description: 'Sample Automation Comment' });
-        await triggerMenuClick(driver, table, 'JAK-1', 'clock-o');
+        await triggerMenuClick(driver, table, 'JAK-1', 'clock');
         await addWorklog(driver, { days: -1, description: 'Sample Automation Comment' });
     });
 });

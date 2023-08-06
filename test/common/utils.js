@@ -152,7 +152,7 @@ export async function respondToDialog(driver, className, btnSelector, waitMS = 1
 }
 
 export async function navigateToMenu(driver, menuId, search) {
-    const menu = await driver.findElement(By.css(`div.sidebar nav[data-testid="side-navigation"] button[data-testid="${menuId}"] span[data-item-title="true"]`));
+    const menu = await driver.findElement(By.css(`div.sidebar-container nav a[data-testid="${menuId}"] span.menu-text`));
     const menuText = await menu.getText();
     assert.equal(menuText, search);
     await menu.click();

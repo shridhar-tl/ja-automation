@@ -56,6 +56,8 @@ export default async function addWorklog(driver, { ticketNo, date, days, descrip
     await btnSave.click();
 
     await forElToBeRemoved(driver, wlDialogSelector);
+
+    await waitFor(1000);
 }
 
 function convertHourToString(hour) {

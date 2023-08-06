@@ -43,7 +43,7 @@ describe("worklog calendar tests", function () {
 
         if (dayOfWeek_today < dayOfWeek_yesterday) {
             const gadgetHeader = await getGadgetHeader(driver);
-            const prevWeekBtn = await gadgetHeader.findElement(By.css('.pull-right button .fa-arrow-left'));
+            const prevWeekBtn = await gadgetHeader.findElement(By.css('.float-end button .fa-arrow-left'));
             await prevWeekBtn.click();
 
             navigated = true;
@@ -58,7 +58,7 @@ describe("worklog calendar tests", function () {
 
         if (navigated) {
             const gadgetHeader = await getGadgetHeader(driver);
-            const nextWeekBtn = await gadgetHeader.findElement(By.css('.pull-right button .fa-arrow-right'));
+            const nextWeekBtn = await gadgetHeader.findElement(By.css('.float-end button .fa-arrow-right'));
             await nextWeekBtn.click();
             await untilGadgetLoads(driver);
         }

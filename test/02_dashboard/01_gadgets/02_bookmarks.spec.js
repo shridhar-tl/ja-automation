@@ -31,24 +31,24 @@ describe("my bookmarks gadget test", function () {
 
     it("add worklog for tickets from loaded list", async function () {
         const table = await getTableFromGadget(driver, gadgetName);
-        await triggerMenuClick(driver, table, 'JAS-2', 'clock-o');
+        await triggerMenuClick(driver, table, 'JAS-2', 'clock');
         await addWorklog(driver, { description: 'Sample Automation worklog from bookmark' });
-        await triggerMenuClick(driver, table, 'JAS-1', 'clock-o');
+        await triggerMenuClick(driver, table, 'JAS-1', 'clock');
         await addWorklog(driver, { days: -1, description: 'Sample Automation worklog from bookmark' });
     });
 
     it("delete bookmarked tickets from loaded list", async function () {
         const table = await getTableFromGadget(driver, gadgetName);
-        await triggerMenuClick(driver, table, 'JAS-1', 'check-square-o');
+        await triggerMenuClick(driver, table, 'JAS-1', 'check-square');
 
-        const btnDelete = await getElFromHeader(driver, gadgetName, 'button.p-button-danger > .fa-trash-o');
+        const btnDelete = await getElFromHeader(driver, gadgetName, 'button.btn-icon-only > .fa-trash');
         await btnDelete.click();
         await confirmDelete(driver);
 
         const rows = await table.findElements(By.css('tbody > tr'));
         assert.equal(rows.length, 1);
 
-        await triggerMenuClick(driver, table, 'JAS-2', 'trash-o');
+        await triggerMenuClick(driver, table, 'JAS-2', 'trash');
         await confirmDelete(driver);
 
         const rowsAfterDelete = await table.findElements(By.css('tbody > tr > td[colspan="11"]'));

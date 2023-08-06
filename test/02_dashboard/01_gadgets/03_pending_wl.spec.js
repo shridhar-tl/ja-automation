@@ -44,16 +44,16 @@ describe("pending worklogs gadget test", function () {
 
     it("delete worklogs from loaded list", async function () {
         const table = await getTableFromGadget(driver, gadgetName);
-        await triggerMenuClick(driver, table, 'JAK-1', 'check-square-o');
+        await triggerMenuClick(driver, table, 'JAK-1', 'check-square');
 
-        const btnDelete = await getElFromHeader(driver, gadgetName, 'button.p-button-danger > .fa-trash-o');
+        const btnDelete = await getElFromHeader(driver, gadgetName, 'button.btn-icon-only > .fa-trash');
         await btnDelete.click();
         await confirmDelete(driver);
 
         const rows = await table.findElements(By.css('tbody > tr'));
         assert.equal(rows.length, 2);
 
-        await triggerMenuClick(driver, table, 'JAS-2', 'trash-o');
+        await triggerMenuClick(driver, table, 'JAS-2', 'trash');
         await confirmDelete(driver);
 
         const rowsAfterDel = await table.findElements(By.css('tbody > tr'));
